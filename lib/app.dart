@@ -12,7 +12,7 @@ class App extends StatelessWidget {
       routeInformationParser: const QRouteInformationParser(),
       routerDelegate: QRouterDelegate(AppRoutes.routes),
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.white, surfaceTintColor: Colors.white),
         scaffoldBackgroundColor: Colors.white,
         primarySwatch: Colors.red
       ),
