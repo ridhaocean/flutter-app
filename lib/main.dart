@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/app.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
