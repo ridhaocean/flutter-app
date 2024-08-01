@@ -9,7 +9,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-        routeInformationParser: const QRouteInformationParser(),
-        routerDelegate: QRouterDelegate(AppRoutes.routes));
+      routeInformationParser: const QRouteInformationParser(),
+      routerDelegate: QRouterDelegate(AppRoutes.routes),
+      theme: ThemeData(
+        primarySwatch: Colors.red
+      ),
+    );
   }
 }
