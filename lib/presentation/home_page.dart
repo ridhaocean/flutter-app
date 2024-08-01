@@ -70,13 +70,13 @@ class HomePage extends StatelessWidget {
                       PopupMenuItem<String>(
                         value: 'logout',
                         child: Container(
-                          height: 30, // Set the desired height for the PopupMenuItem
+                          height: 30,
                           alignment: Alignment.centerLeft,
                           child: const Text('Log out', style: TextStyle(fontSize: 12.0)),
                         ),
                       ),
                     ],
-                    offset: const Offset(0, 40), // Adjust the offset to position the menu below the CircleAvatar
+                    offset: const Offset(0, 40),
                     child: const CircleAvatar(
                       backgroundImage: AssetImage('images/logo-troops.png'),
                       radius: 20,
