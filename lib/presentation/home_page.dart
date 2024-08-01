@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutterapp/route/routes.dart';
+import 'package:qlevar_router/qlevar_router.dart';
 import '../model/event.dart';
 
 class HomePage extends StatelessWidget {
@@ -45,25 +49,41 @@ class HomePage extends StatelessWidget {
                 children: [
                   Image.asset(
                     'images/logo-troops.png',
-                    // Replace with your logo asset path
                     height: 20,
                   ),
                   SizedBox(width: 10),
-                  Text(
+                  const Text(
                     'Halo, User',
                     style: TextStyle(fontSize: 15),
                   ),
                 ],
               ),
-              const Row(
+              Row(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage('images/logo-troops.png'),
-                    // Replace with your profile image asset path
-                    radius: 20,
+                  PopupMenuButton<String>(
+                    onSelected: (String result) {
+                      if (result == 'logout') {
+                        QR.replace(AppRoutes.homePath, AppRoutes.loginPath);
+                      }
+                    },
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                      PopupMenuItem<String>(
+                        value: 'logout',
+                        child: Container(
+                          height: 30, // Set the desired height for the PopupMenuItem
+                          alignment: Alignment.centerLeft,
+                          child: const Text('Log out', style: TextStyle(fontSize: 12.0)),
+                        ),
+                      ),
+                    ],
+                    offset: const Offset(0, 40), // Adjust the offset to position the menu below the CircleAvatar
+                    child: const CircleAvatar(
+                      backgroundImage: AssetImage('images/logo-troops.png'),
+                      radius: 20,
+                    ),
                   ),
                 ],
-              ),
+              )
             ],
           ),
         ),
@@ -81,7 +101,6 @@ class HomePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
                     image: AssetImage('images/ocean-mengajar.png'),
-                    // Replace with your image asset path
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -98,37 +117,44 @@ class HomePage extends StatelessWidget {
                 itemCount: events.length,
                 itemBuilder: (context, index) {
                   final event = events[index];
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 16),
-                    width: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12),
-                              bottomLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(12)),
-                          child: Image.asset(
-                            event.thumbnailUrl ?? 'images/ocean-mengajar.png',
-                            // Replace with your thumbnail image asset path
-                            height: 150,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            alignment: Alignment.topCenter,
+                  return InkWell(
+                    onTap: () {
+                      // Convert the event object to a JSON string
+                      final eventJson = jsonEncode(event.toJson());
+                      QR.toName(AppRoutes.detailRouteName,
+                          params: {'event': eventJson});
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 16),
+                      width: 400,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12),
+                                bottomLeft: Radius.circular(12),
+                                bottomRight: Radius.circular(12)),
+                            child: Image.asset(
+                              event.thumbnailUrl ?? 'images/ocean-mengajar.png',
+                              height: 150,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              alignment: Alignment.topCenter,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          event.title ?? "Ocean Mengajar",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 20),
-                      ],
+                          SizedBox(height: 20),
+                          Text(
+                            event.title ?? "Ocean Mengajar",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      ),
                     ),
                   );
                 },

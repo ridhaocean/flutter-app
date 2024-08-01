@@ -12,10 +12,34 @@ class App extends StatelessWidget {
       routeInformationParser: const QRouteInformationParser(),
       routerDelegate: QRouterDelegate(AppRoutes.routes),
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.white, surfaceTintColor: Colors.white),
+        appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white, surfaceTintColor: Colors.white),
         scaffoldBackgroundColor: Colors.white,
-        primarySwatch: Colors.red
+        primarySwatch: Colors.red,
+        popupMenuTheme: const PopupMenuThemeData(
+          color: Colors
+              .white, // Set the background color of the popup menu to white
+        ),
       ),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            size: Size(
+              MediaQuery.of(context).size.width.clamp(0.0, 430.0),
+              MediaQuery.of(context).size.height.clamp(0.0, 932.0),
+            ),
+          ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 430,
+                maxHeight: 932,
+              ),
+              child: child,
+            ),
+          ),
+        );
+      },
     );
   }
 }

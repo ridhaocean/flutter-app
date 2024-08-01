@@ -14,6 +14,7 @@ class AppRoutes {
   static const detailPath = "/detail";
 
   static const homeRouteName = "home";
+  static const detailRouteName = "detail";
 
   static final routes = [
     QRoute(
@@ -24,12 +25,6 @@ class AppRoutes {
     QRoute(
       path: loginPath,
       builder: () => login.LoginPage(),
-      pageType: const QFadePage(
-        transitionDuration: Duration(milliseconds: 1000),
-        withType: QSlidePage(
-            transitionDuration:
-                Duration(milliseconds: 5000)), // set the type to mix with
-      ),
       middleware: [DeferredLoader(login.loadLibrary)],
     ),
     QRoute(
@@ -38,6 +33,7 @@ class AppRoutes {
       middleware: [DeferredLoader(home.loadLibrary)],
     ),
     QRoute(
+      name: detailRouteName,
       path: detailPath,
       builder: () => detail.DetailPage(),
       middleware: [DeferredLoader(detail.loadLibrary)],
