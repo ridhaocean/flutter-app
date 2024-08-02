@@ -1,168 +1,174 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutterapp/route/routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qlevar_router/qlevar_router.dart';
-import '../model/event.dart';
 
-class HomePage extends StatelessWidget {
-  final List<Event> events = [
-    Event(
-        id: "1",
-        title: "GROWTH MINDSET AND THE POWER OF FEEDBACK",
-        thumbnailUrl: "images/om-growth.png",
-        description:
-            "Date: Jumat, 5 Juli 2024 Time: 15.30 - 17.30 WIB Media: Live Zoom Meeting GRATIS Speaker: Nadhifa Sofia - Senior Product Owner Ocean Innovation Additional Fee Rp30.000 for more benefits"),
-    Event(
-        id: "2",
-        title: "Software Architecture for Beginner",
-        thumbnailUrl: "images/om-arch.png",
-        description:
-            "Yuk, Ikuti Kelas Ocean Mengajar! Belajar Software Architecture dari Nol bersama Pak Rusdiana, CTO Ocean Innovation. Gratis! Tanggal: Jumat, 03 Mei 2024. Waktu: 15:30-17:30 Link Pendaftaran: bit.ly/OceanMengajar"
-            "Segera Daftar di Link yang Tersedia. Jangan Sampai Ketinggalan!"),
-    Event(
-        id: "3",
-        title: "Implementation Unit Testing In GO With Testify",
-        thumbnailUrl: "images/om-testify.png",
-        description:
-            "Kali ini kita akan bahas topik \"Implentation Unit Testing In Go With Testify\" yang akan disampaikan langsung oleh expert kita Tiar Agisti, Senior Backend Developer\nHari & Tanggal : Jumat, 14 Juni 2024 Pukul: 15.30 - 17.30 WIB Link Pendaftaran: bit.ly/OceanMengajar-2"),
-    Event(
-        id: "4",
-        title: "Flutter for Everyone",
-        thumbnailUrl: "images/om-flutter.png",
-        description:
-            "Flutter for Everyone Ridha Danjanny - Android Developer at Ocean Innovation Date: Friday, 2nd August 2024 Time: 15.30 - 17.30 WIB Don't miss out on this chance to elevate your skills and dive into the world of Flutter development. Reserve your spot today and be part of an enriching learning experience!")
-  ];
+import '../manager/event_cubit.dart';
+import '../manager/event_state.dart';
+import '../route/routes.dart';
 
+class HomePage extends StatefulWidget {
   HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch events when the page is initialized
+    context.read<EventCubit>().fetchEvents();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
-        child: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Image.asset(
-                    'images/logo-troops.png',
-                    height: 20,
-                  ),
-                  SizedBox(width: 10),
-                  const Text(
-                    'Halo, User',
-                    style: TextStyle(fontSize: 15),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  PopupMenuButton<String>(
-                    onSelected: (String result) {
-                      if (result == 'logout') {
-                        QR.replace(AppRoutes.homePath, AppRoutes.loginPath);
-                      }
-                    },
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                      PopupMenuItem<String>(
-                        value: 'logout',
-                        child: Container(
-                          height: 30,
-                          alignment: Alignment.centerLeft,
-                          child: const Text('Log out', style: TextStyle(fontSize: 12.0)),
-                        ),
-                      ),
-                    ],
-                    offset: const Offset(0, 40),
-                    child: const CircleAvatar(
-                      backgroundImage: AssetImage('images/logo-troops.png'),
-                      radius: 20,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60.0),
+          child: AppBar(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Image.asset(
+                      'images/logo-troops.png',
+                      height: 20,
                     ),
-                  ),
-                ],
-              )
-            ],
+                    SizedBox(width: 10),
+                    const Text(
+                      'Halo, User',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    PopupMenuButton<String>(
+                      onSelected: (String result) {
+                        if (result == 'logout') {
+                          QR.replace(AppRoutes.homePath, AppRoutes.loginPath);
+                        }
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<String>>[
+                        PopupMenuItem<String>(
+                          value: 'logout',
+                          child: Container(
+                            height: 30,
+                            alignment: Alignment.centerLeft,
+                            child: const Text('Log out',
+                                style: TextStyle(fontSize: 12.0)),
+                          ),
+                        ),
+                      ],
+                      offset: const Offset(0, 40),
+                      child: const CircleAvatar(
+                        backgroundImage: AssetImage('images/logo-troops.png'),
+                        radius: 20,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 216,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  image: DecorationImage(
-                    image: AssetImage('images/ocean-mengajar.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              SizedBox(height: 25),
-              Text(
-                'Newsfeed',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 16),
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: events.length,
-                itemBuilder: (context, index) {
-                  final event = events[index];
-                  return InkWell(
-                    onTap: () {
-                      // Convert the event object to a JSON string
-                      final eventJson = jsonEncode(event.toJson());
-                      QR.toName(AppRoutes.detailRouteName,
-                          params: {'event': eventJson});
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 16),
-                      width: 400,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                topRight: Radius.circular(12),
-                                bottomLeft: Radius.circular(12),
-                                bottomRight: Radius.circular(12)),
-                            child: Image.asset(
-                              event.thumbnailUrl ?? 'images/ocean-mengajar.png',
-                              height: 150,
-                              width: double.infinity,
+        body: BlocBuilder<EventCubit, EventState>(
+          builder: (context, state) {
+            if (state is EventLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is EventLoaded) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await context.read<EventCubit>().fetchEvents();
+                },
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 216,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: AssetImage('images/ocean-mengajar.png'),
                               fit: BoxFit.cover,
-                              alignment: Alignment.topCenter,
                             ),
                           ),
-                          SizedBox(height: 20),
-                          Text(
-                            event.title ?? "Ocean Mengajar",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 20),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 25),
+                        Text(
+                          'Newsfeed',
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 16),
+                        ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: state.eventResponse.data.items.length,
+                          itemBuilder: (context, index) {
+                            final event = state.eventResponse.data.items[index];
+                            return InkWell(
+                              onTap: () {
+                                // Convert the event object to a JSON string
+                                final eventJson = jsonEncode(event.toJson());
+                                QR.toName(AppRoutes.detailRouteName,
+                                    params: {'event': eventJson});
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 16),
+                                width: 400,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          topRight: Radius.circular(12),
+                                          bottomLeft: Radius.circular(12),
+                                          bottomRight: Radius.circular(12)),
+                                      child: Image.asset(
+                                        event.thumbnailUrl ??
+                                            'images/ocean-mengajar.png',
+                                        height: 150,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.topCenter,
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                    Text(
+                                      event.title ?? "Ocean Mengajar",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    SizedBox(height: 20),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+                  ),
+                ),
+              );
+            } else if (state is EventError) {
+              return Center(child: Text('Error: ${state.message}'));
+            }
+            return const Center(child: Text('General Error'));
+          },
+        ));
   }
 }

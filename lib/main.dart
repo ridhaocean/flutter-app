@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterapp/app.dart';
 
+import 'data/api_service.dart';
+import 'manager/event_cubit.dart';
+
 void main() {
-  runApp(const App());
+  final apiService = ApiService();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<EventCubit>(
+          create: (context) => EventCubit(apiService),
+        ),
+      ],
+      child: const App(),
+    ),
+  );
   // runApp(const MyApp());
 }
 
