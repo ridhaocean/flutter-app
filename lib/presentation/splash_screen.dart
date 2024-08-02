@@ -35,9 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Image.asset(
-          'images/logo-troops.png',
-          width: 200, // Adjust the width as needed
-          height: 200, // Adjust the height as needed
+          'images/om-logo.png',
+          width: 300, // Adjust the width as needed
+          height: 300, // Adjust the height as needed
         ),
       ),
     );

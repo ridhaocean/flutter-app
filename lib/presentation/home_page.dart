@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Image.asset(
-                      'images/logo-troops.png',
+                      'images/om-logo.png',
                       height: 20,
                     ),
                     SizedBox(width: 10),
