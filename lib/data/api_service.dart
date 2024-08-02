@@ -5,10 +5,10 @@ import '../model/event.dart';
 import '../model/user.dart';
 
 class ApiService {
-  final String homeEndpoint =
-      'https://run.mocky.io/v3/cef846f9-3b14-4371-9dd0-6108e845534b';
   final String userEndpoint =
       'https://run.mocky.io/v3/96ab8118-9f60-492a-b508-a848dfe2b962';
+  final String homeEndpoint =
+      'https://run.mocky.io/v3/4cd92041-25f2-478f-a05e-b01e84c7dda6';
 
   Future<http.Response> fetchEvents() async {
     final response = await http.get(Uri.parse(homeEndpoint));

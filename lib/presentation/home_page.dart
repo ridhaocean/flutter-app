@@ -8,7 +8,7 @@ import '../manager/event_state.dart';
 import '../route/routes.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Image.asset(
-                      'images/om-logo.png',
+                      'assets/images/om-logo.png',
                       height: 20,
                     ),
                     SizedBox(width: 10),
@@ -66,7 +66,8 @@ class _HomePageState extends State<HomePage> {
                       ],
                       offset: const Offset(0, 40),
                       child: const CircleAvatar(
-                        backgroundImage: AssetImage('images/logo-troops.png'),
+                        backgroundImage:
+                            AssetImage('assets/images/logo-troops.png'),
                         radius: 20,
                       ),
                     ),
@@ -79,14 +80,15 @@ class _HomePageState extends State<HomePage> {
         body: BlocBuilder<EventCubit, EventState>(
           builder: (context, state) {
             if (state is EventLoading) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.red));
             } else if (state is EventLoaded) {
               return RefreshIndicator(
                 onRefresh: () async {
                   await context.read<EventCubit>().fetchEvents();
                 },
                 child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -97,21 +99,22 @@ class _HomePageState extends State<HomePage> {
                           height: 216,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
-                              image: AssetImage('images/ocean-mengajar.png'),
+                            image: const DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/ocean-mengajar.png'),
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
                         SizedBox(height: 25),
-                        Text(
+                        const Text(
                           'Newsfeed',
                           style: TextStyle(
                               fontSize: 18.0, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: state.eventResponse.data.items.length,
                           itemBuilder: (context, index) {
@@ -133,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ClipRRect(
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(12),
                                           topRight: Radius.circular(12),
                                           bottomLeft: Radius.circular(12),
@@ -147,12 +150,12 @@ class _HomePageState extends State<HomePage> {
                                         alignment: Alignment.topCenter,
                                       ),
                                     ),
-                                    SizedBox(height: 20),
+                                    const SizedBox(height: 20),
                                     Text(
                                       event.title ?? "Ocean Mengajar",
-                                      style: TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 16),
                                     ),
-                                    SizedBox(height: 20),
+                                    const SizedBox(height: 20),
                                   ],
                                 ),
                               ),

@@ -34,10 +34,23 @@ class _SplashScreenState extends State<SplashScreen> {
     // from assets folder
     return Scaffold(
       body: Center(
-        child: Image.asset(
-          'images/om-logo.png',
-          width: 300, // Adjust the width as needed
-          height: 300, // Adjust the height as needed
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 30.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(),
+              Image.asset(
+                'assets/images/om-logo.png',
+                width: 300, // Adjust the width as needed
+                height: 300, // Adjust the height as needed
+              ),
+              Image.asset(
+                'assets/images/om-organizer.png',
+                width: 300, // Adjust the width as needed
+              ),
+            ],
+          ),
         ),
       ),
     );
